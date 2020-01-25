@@ -12,4 +12,6 @@ struct MarvelModel {
     let marvelID:Int
     let marvelTitle:String
     let marvelImage:String
+    let limit:Int
+    let total:Int
 }

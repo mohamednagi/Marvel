@@ -18,11 +18,19 @@ class MarvelDetailsView: UIViewController, BaseView {
     @IBOutlet weak var seriesList: UICollectionView!
     @IBOutlet weak var storiesList: UICollectionView!
     @IBOutlet weak var eventsList: UICollectionView!
+    @IBOutlet weak var indicatorView: UIView!
+    
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent;
     }
+    
+    
     var viewModel: DetailsViewModel!
+    
+    var detailLink = ""
+    var wikiLink = ""
+    var comicLink = ""
     var characterID = ""
     
     var comicsArray = [MarvelDetailsCellModel]()
@@ -43,9 +51,13 @@ class MarvelDetailsView: UIViewController, BaseView {
     }
     
     func onDataRecieved(data: AnyObject) {
+        indicatorView.isHidden = true
         guard let returnedData = data as? [MarvelDetailsModel] else {return}
         
         for returnedCharacter in returnedData {
+            detailLink = returnedCharacter.detailLink
+            wikiLink = returnedCharacter.wikiLink
+            comicLink = returnedCharacter.comicLink
             let imageUrl = URL(string: returnedCharacter.marvelImage)
             marvelImage.kf.indicatorType = .activity
             marvelImage.kf.setImage(with: imageUrl)
@@ -70,6 +82,23 @@ class MarvelDetailsView: UIViewController, BaseView {
                                       action: #selector(UINavigationController.popViewController(animated:)))
         navigationItem.leftBarButtonItem = backBTN
     }
+    
+    @IBAction func openSafariAction(_ sender: UIButton) {
+        
+        var destination = ""
+        switch sender.tag {
+        case 0: // detail
+            destination = detailLink
+        case 1: // wiki
+            destination = wikiLink
+        default:    // comic
+            destination = comicLink
+        }
+        print(destination)
+        guard let url = URL(string: destination) else { return }
+        UIApplication.shared.open(url)
+    }
+    
     
     
 }

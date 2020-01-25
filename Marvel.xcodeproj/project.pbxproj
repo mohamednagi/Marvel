@@ -31,6 +31,7 @@
 		9A5380A223DB81EC0095CDB3 /* MarvelDetailsViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5380A123DB81EC0095CDB3 /* MarvelDetailsViewExtension.swift */; };
 		9A5380A523DB84620095CDB3 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5380A423DB84620095CDB3 /* DetailsViewModel.swift */; };
 		9A5380A723DB84E10095CDB3 /* MarvelDetailsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5380A623DB84E10095CDB3 /* MarvelDetailsRepository.swift */; };
+		9AE831D023DC68E30034B4A4 /* MarvelSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE831CF23DC68E30034B4A4 /* MarvelSearchCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		9A5380A123DB81EC0095CDB3 /* MarvelDetailsViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelDetailsViewExtension.swift; sourceTree = "<group>"; };
 		9A5380A423DB84620095CDB3 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
 		9A5380A623DB84E10095CDB3 /* MarvelDetailsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelDetailsRepository.swift; sourceTree = "<group>"; };
+		9AE831CF23DC68E30034B4A4 /* MarvelSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelSearchCell.swift; sourceTree = "<group>"; };
 		F15F5D418064629F9E14BA8A /* Pods-Marvel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Marvel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Marvel/Pods-Marvel.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				9A53807F23DB1E340095CDB3 /* HomeMarvelCell.swift */,
+				9AE831CF23DC68E30034B4A4 /* MarvelSearchCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				9A53809823DB7F270095CDB3 /* SeriesCell.swift in Sources */,
 				9A53809E23DB80B70095CDB3 /* MarvelDetailsCellModel.swift in Sources */,
 				9A53808F23DB22F00095CDB3 /* HomeExtension.swift in Sources */,
+				9AE831D023DC68E30034B4A4 /* MarvelSearchCell.swift in Sources */,
 				9A53806523DB178C0095CDB3 /* HomeView.swift in Sources */,
 				9A53806323DB178C0095CDB3 /* AppDelegate.swift in Sources */,
 				9A53808823DB215E0095CDB3 /* BaseViewModel.swift in Sources */,

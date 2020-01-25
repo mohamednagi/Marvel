@@ -10,8 +10,8 @@ import Foundation
 
 class MarvelListRepository {
     
-    func getMarvelList(completionHandler: @escaping (_ array:[MarvelModel]) -> ()) {
-        ServiceLayer.shared().getData(url: "v1/public/characters", parameters: ["apikey":publicKey,"ts":ts,"hash":hashKey]) { (data, _, error) in
+    func getMarvelList(offset:Int, completionHandler: @escaping (_ array:[MarvelModel]) -> ()) {
+        ServiceLayer.shared().getData(fullUrl: baseUrl + "v1/public/characters", parameters: ["apikey":publicKey,"ts":ts,"hash":hashKey,"offset":offset]) { (data, _, error) in
             guard let data = data, error == nil else {
                 print(error?.localizedDescription as Any)
                 return}
@@ -28,7 +28,7 @@ class MarvelListRepository {
                     let thumbnail = result["thumbnail"] as? [String:String] ?? [:]
                     let imagePath = thumbnail["path"] ?? ""
                     let imageExtension = thumbnail["extension"] ?? ""
-                    let object = MarvelModel(marvelID: id, marvelTitle: name, marvelImage: imagePath + "." + imageExtension)
+                    let object = MarvelModel(marvelID: id, marvelTitle: name, marvelImage: imagePath + "." + imageExtension, limit: limit, total:total)
                     dataArrayHolder.append(object)
                 }
                 completionHandler(dataArrayHolder)

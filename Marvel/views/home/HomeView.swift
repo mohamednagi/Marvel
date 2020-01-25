@@ -12,7 +12,9 @@ import Kingfisher
 class HomeView: UIViewController, BaseView {
     
     @IBOutlet weak var homeMarvelList: UITableView!
+    @IBOutlet weak var marvelSearchList: UITableView!
     
+    @IBOutlet weak var searchListHeightConstraint: NSLayoutConstraint!
     lazy var searchBar:UISearchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height * 0.5))
     lazy var searchIcon:UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 20, height: self.view.frame.size.height * 0.7))
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -21,10 +23,11 @@ class HomeView: UIViewController, BaseView {
     var viewModel: HomeViewModel!
     var homeMarvelArray = [MarvelModel]()
     var filteredHomeMarvelArray = [MarvelModel]()
+    var marvelSearchArray = [MarvelModel]()
     
-    var limit = 20
+    var limit = 0
     var total = 0
-    var page:Int?
+    var offset = 0
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -34,16 +37,21 @@ class HomeView: UIViewController, BaseView {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = HomeViewModel(view: self)
-        viewModel.getHomeData()
+        viewModel.getHomeData(offset: offset)
     }
 
     func onDataRecieved(data: AnyObject) {
         guard let returnedData = data as? [MarvelModel] else {return}
-        homeMarvelArray = returnedData
+        homeMarvelArray += returnedData
+        limit = homeMarvelArray.first?.limit ?? 0
+        total = homeMarvelArray.first?.total ?? 0
         homeMarvelList.reloadData()
     }
     
     func handlingNavBar() {
+        searchBar.delegate = self
+        searchListHeightConstraint.constant = 0
+        searchBar.text = ""
         navigationController?.navigationBar.barTintColor = .black
         searchBar.isHidden = true
         searchIcon.isHidden = false

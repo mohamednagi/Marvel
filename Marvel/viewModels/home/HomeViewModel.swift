@@ -12,8 +12,8 @@ class HomeViewModel: BaseViewModel {
     
     var marvelListRepository = MarvelListRepository()
     
-    func getHomeData() {
-        marvelListRepository.getMarvelList { (returnedJson) in
+    func getHomeData(offset:Int) {
+        marvelListRepository.getMarvelList(offset:offset) { (returnedJson) in
             DispatchQueue.main.async {
                 self.view.onDataRecieved(data: returnedJson as AnyObject)
             }

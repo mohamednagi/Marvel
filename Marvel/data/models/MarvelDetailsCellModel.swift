@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// marvel's details cell model
 struct MarvelDetailsCellModel {
     let cellName:String
     let cellImage:String

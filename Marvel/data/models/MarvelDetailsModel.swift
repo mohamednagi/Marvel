@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// main marvel's details model
 struct MarvelDetailsModel {
     let marvelImage:String
     let marvelName:String

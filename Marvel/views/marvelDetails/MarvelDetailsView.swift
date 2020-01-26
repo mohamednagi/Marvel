@@ -50,6 +50,9 @@ class MarvelDetailsView: UIViewController, BaseView {
         
     }
     
+    /// observing data recieved
+    ///
+    /// - Parameter data: fetched data from VM
     func onDataRecieved(data: AnyObject) {
         indicatorView.isHidden = true
         guard let returnedData = data as? [MarvelDetailsModel] else {return}
@@ -74,8 +77,8 @@ class MarvelDetailsView: UIViewController, BaseView {
         }
     }
     
+    /// handling navBar backbutton
     func handleNavBar() {
-        navigationController?.navigationBar.barTintColor = .clear
         let backBTN = UIBarButtonItem(image: UIImage(named: "arrow"),
                                       style: .plain,
                                       target: navigationController,

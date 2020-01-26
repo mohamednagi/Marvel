@@ -31,7 +31,7 @@ class HomeView: UIViewController, BaseView {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        handlingNavBar()
+        handlingUI()
     }
 
     override func viewDidLoad() {
@@ -40,6 +40,9 @@ class HomeView: UIViewController, BaseView {
         viewModel.getHomeData(offset: offset)
     }
 
+    /// observing data recieved
+    ///
+    /// - Parameter data: fetched data from VM
     func onDataRecieved(data: AnyObject) {
         guard let returnedData = data as? [MarvelModel] else {return}
         homeMarvelArray += returnedData
@@ -48,7 +51,8 @@ class HomeView: UIViewController, BaseView {
         homeMarvelList.reloadData()
     }
     
-    func handlingNavBar() {
+    /// handling navBar with setting some UI structure
+    func handlingUI() {
         searchBar.delegate = self
         searchListHeightConstraint.constant = 0
         searchBar.text = ""
@@ -65,6 +69,9 @@ class HomeView: UIViewController, BaseView {
         self.navigationItem.titleView = imageView
     }
     
+    /// showing searchBar with animation
+    ///
+    /// - Parameter sender: search button in navBar
     @objc func showSearchBar(sender: UIButton) {
         searchIcon.isHidden = true
         

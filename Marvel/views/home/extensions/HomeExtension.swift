@@ -10,6 +10,12 @@ import UIKit
 
 extension HomeView: UITableViewDelegate, UITableViewDataSource {
     
+    /// returning number of cells will be presented
+    ///
+    /// - Parameters:
+    ///   - tableView: specific list
+    ///   - section: for every section
+    /// - Returns: returning the count for list's array
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case marvelSearchList:
@@ -19,6 +25,12 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    /// initializing table's cell
+    ///
+    /// - Parameters:
+    ///   - tableView: specific list
+    ///   - indexPath: current index of cell
+    /// - Returns: returning the full cell with it's items
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch tableView {
         case marvelSearchList:
@@ -39,6 +51,12 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    /// specifying height for every cell
+    ///
+    /// - Parameters:
+    ///   - tableView: specifying tableview
+    ///   - indexPath: index of each cell
+    /// - Returns: returning the height for each cell
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case marvelSearchList:
@@ -48,6 +66,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    /// handling table view delegate to get character's details
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         guard let marvelDetailsView = storyBoard.instantiateViewController(withIdentifier: "MarvelDetailsView") as? MarvelDetailsView else {return}
@@ -60,6 +79,12 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(marvelDetailsView, animated: true)
     }
     
+    /// capturing cell will be presented for pagination
+    ///
+    /// - Parameters:
+    ///   - tableView: specific list
+    ///   - cell: cell will be presented
+    ///   - indexPath: index will be presented
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView == homeMarvelList {
         if indexPath.row == homeMarvelArray.count - 2 {
@@ -68,12 +93,8 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
             if homeMarvelArray.count < total && (Double(offset) <= result) {
                 limit += 20
                 offset = (offset) + 1
-//                if Double(offset) <= result {
-                    // handlePagination(page: String(page ?? 1))
-//                    print("fetch more")
                     print("offset",offset)
                     viewModel.getHomeData(offset: offset)
-//                }
                 self.perform(#selector(loadTable), with: nil, afterDelay: 1.0)
             }
         }
@@ -85,6 +106,7 @@ extension HomeView: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+/// handling search bar delegate methods for search action
 extension HomeView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         handleSearchAction()
@@ -94,6 +116,7 @@ extension HomeView: UISearchBarDelegate {
         handleSearchAction()
     }
     
+    /// handling search bar and search list
     func handleSearchAction() {
         if searchBar.text == "" {
             searchListHeightConstraint.constant = 0

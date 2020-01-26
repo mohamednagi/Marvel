@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// main marvel home model
 struct MarvelModel {
     let marvelID:Int
     let marvelTitle:String

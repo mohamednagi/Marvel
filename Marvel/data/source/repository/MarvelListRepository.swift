@@ -10,6 +10,11 @@ import Foundation
 
 class MarvelListRepository {
     
+    /// getting marvel's home characters
+    ///
+    /// - Parameters:
+    ///   - offset: number of page for pagination
+    ///   - completionHandler: capturing value to pass
     func getMarvelList(offset:Int, completionHandler: @escaping (_ array:[MarvelModel]) -> ()) {
         ServiceLayer.shared().getData(fullUrl: baseUrl + "v1/public/characters", parameters: ["apikey":publicKey,"ts":ts,"hash":hashKey,"offset":offset]) { (data, _, error) in
             guard let data = data, error == nil else {

@@ -12,6 +12,9 @@ class DetailsViewModel: BaseViewModel {
     
     var marvelDetailsRepository = MarvelDetailsRepository()
     
+    /// passing data to details view 
+    ///
+    /// - Parameter characterID: data for specific character
     func getDetailsData(characterID:String) {
         marvelDetailsRepository.getMarvelDetails(characterID: characterID) { (returnedJson) in
             DispatchQueue.main.async {

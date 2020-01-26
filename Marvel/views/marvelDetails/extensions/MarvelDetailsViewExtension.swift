@@ -9,6 +9,13 @@
 import UIKit
 
 extension MarvelDetailsView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    /// returning number of collection's array
+    ///
+    /// - Parameters:
+    ///   - collectionView: specifying each collection list
+    ///   - section: sections in collection if exist more than one
+    /// - Returns: return number of collection list rows
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case comicsList:
@@ -22,6 +29,7 @@ extension MarvelDetailsView: UICollectionViewDelegate, UICollectionViewDataSourc
         }
     }
     
+    /// initializing each cell in each collection list
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
         case comicsList:
@@ -60,6 +68,8 @@ extension MarvelDetailsView: UICollectionViewDelegate, UICollectionViewDataSourc
         }
     }
     
+    /// implementing collection view delegate flowlayout function
+    /// returning size of each cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.view.frame.width * 0.3, height: 180)
     }

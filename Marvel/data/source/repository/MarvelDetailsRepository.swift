@@ -12,8 +12,25 @@ class MarvelDetailsRepository {
     
     
     
+    /// getting marvel's derails
+    ///
+    /// - Parameters:
+    ///   - characterID: getting details depend on character's id
+    ///   - completionHandler: capturing value to pass to VM
     func getMarvelDetails(characterID:String,completionHandler: @escaping (_ array:[MarvelDetailsModel]) -> ()) {
-        ServiceLayer.shared().getData(fullUrl: baseUrl + "v1/public/characters/\(characterID)", parameters: ["apikey":publicKey,"ts":ts,"hash":hashKey]) { (data, _, error) in
+
+        let group = DispatchGroup()
+        ServiceLayer.shared().getData(fullUrl: baseUrl + "v1/public/characters/\(characterID)", parameters: ["apikey":publicKey,"ts":ts,"hash":hashKey]) { (data, response, error) in
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                
+                switch httpResponse.statusCode {
+                case 200:
+                    print("good to go")
+                default:
+                    return
+                }
+            }
             guard let data = data, error == nil else {
                 print(error?.localizedDescription as Any)
                 return}
@@ -30,6 +47,7 @@ class MarvelDetailsRepository {
                 
                 let results = data["results"] as? [[String:Any]] ?? []
                 for result in results {
+                    //                    semaphore.signal()
                     let name = result["name"] as? String ?? ""
                     let characterDescription = result["description"] as? String ?? ""
                     let thumbnail = result["thumbnail"] as? [String:String] ?? [:]
@@ -57,7 +75,10 @@ class MarvelDetailsRepository {
                     
                     guard let comics = result["comics"] as? [String:Any] else {return}
                     let comicsItems = comics["items"] as? [[String:String]] ?? []
+                    
                     for comic in comicsItems {
+                        group.enter()
+                        
                         let comicName = comic["name"] ?? ""
                         let comicURI = comic["resourceURI"] ?? ""
                         
@@ -78,19 +99,20 @@ class MarvelDetailsRepository {
                                     comicsHolder.append(object)
                                 }
                                 if !comicsHolder.isEmpty {
-                                let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
-                                detailsHolder.append(detailsObject)
-                                completionHandler(detailsHolder)
+                                    let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
+                                    detailsHolder.append(detailsObject)
                                 }
                             }catch {
                                 print(error.localizedDescription)
                             }
+                            group.leave()
                         })
-                        
                     }
+                    
                     guard let series = result["series"] as? [String:Any] else {return}
                     let seriesItems = series["items"] as? [[String:String]] ?? []
                     for singleSeries in seriesItems {
+                        group.enter()
                         let seriesName = singleSeries["name"] ?? ""
                         let seriesURI = singleSeries["resourceURI"] ?? ""
                         
@@ -111,20 +133,19 @@ class MarvelDetailsRepository {
                                     seriesHolder.append(object)
                                 }
                                 if !seriesHolder.isEmpty {
-                                let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
-                                detailsHolder.append(detailsObject)
-                                completionHandler(detailsHolder)
-                                    
+                                    let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
+                                    detailsHolder.append(detailsObject)
                                 }
                             }catch {
                                 print(error.localizedDescription)
                             }
+                            group.leave()
                         })
-                        
                     }
                     guard let stories = result["stories"] as? [String:Any] else {return}
                     let storyItems = stories["items"] as? [[String:String]] ?? []
                     for story in storyItems {
+                        group.enter()
                         let storyName = story["name"] ?? ""
                         let storyURI = story["resourceURI"] ?? ""
                         ServiceLayer.shared().getData(fullUrl: storyURI, parameters: ["apikey":publicKey,"ts":ts,"hash":hashKey], completion: { (data, _, error) in
@@ -144,20 +165,20 @@ class MarvelDetailsRepository {
                                     storiesHolder.append(object)
                                 }
                                 if !storiesHolder.isEmpty {
-                                let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
-                                detailsHolder.append(detailsObject)
-                                completionHandler(detailsHolder)
-                                    
+                                    let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
+                                    detailsHolder.append(detailsObject)
                                 }
                             }catch {
                                 print(error.localizedDescription)
                             }
+                            group.leave()
                         })
-                        
                     }
+                    
                     guard let events = result["events"] as? [String:Any] else {return}
                     let eventItems = events["items"] as? [[String:String]] ?? []
                     for event in eventItems {
+                        group.enter()
                         let eventName = event["name"] ?? ""
                         let enevtURI = event["resourceURI"] ?? ""
                         ServiceLayer.shared().getData(fullUrl: enevtURI, parameters: ["apikey":publicKey,"ts":ts,"hash":hashKey], completion: { (data, _, error) in
@@ -177,15 +198,19 @@ class MarvelDetailsRepository {
                                     eventsHolder.append(object)
                                 }
                                 if !eventsHolder.isEmpty {
-                                let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
-                                detailsHolder.append(detailsObject)
-                                completionHandler(detailsHolder)
+                                    let detailsObject = MarvelDetailsModel(marvelImage: imagePath + "." + imageExtension, marvelName: name, marvelDescription: characterDescription, marvelComics: comicsHolder, marvelSeries: seriesHolder, marvelStories: storiesHolder, marvelEvents: eventsHolder, detailLink: detailLink, wikiLink: wikiLink, comicLink: comicLink)
+                                    detailsHolder.append(detailsObject)
+                                    completionHandler(detailsHolder)
                                     
                                 }
                             }catch {
                                 print(error.localizedDescription)
                             }
+                            group.leave()
                         })
+                    }
+                    group.notify(queue: .main) {
+                        completionHandler(detailsHolder)
                     }
                 }
                 

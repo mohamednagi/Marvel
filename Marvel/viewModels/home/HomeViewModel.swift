@@ -12,6 +12,9 @@ class HomeViewModel: BaseViewModel {
     
     var marvelListRepository = MarvelListRepository()
     
+    /// passing home data to home view
+    ///
+    /// - Parameter offset: number of page for pagination
     func getHomeData(offset:Int) {
         marvelListRepository.getMarvelList(offset:offset) { (returnedJson) in
             DispatchQueue.main.async {
